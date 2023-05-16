@@ -1,14 +1,21 @@
 #!/bin/bash
-#run minimap2 from file name list , when file name are too different
-# ../../../sh/m1-minimap2_align_1st-round-SH1212-c5.sc <$1>
+# run minimap2 mapping 
+# Usage../../../sh/m1-minimap2_align_1st-round-SH1212-c5.sc <SAMPLE>
+# Prerequisite software:
+# minimap2: https://github.com/lh3/minimap2.git
+# samtools: http://www.htslib.org/
+
+# Dr. Chih-Jen Huang
+# Genomic Research Center, Academia Sinica, Taipei, Taiwan
+# May.2023
 
 source /home/cjh/anaconda3/etc/profile.d/conda.sh
 conda activate minimap2
 
 ref="./example/HBV_isolate_SH1212-C5_complete_genome.fasta"
 refNAME="SH1212-C5"
-SAMPLE="1810095"
-#SAMPLE=$1
+SAMPLE="1810095" #example sample name
+#SAMPLE=$1 #args for SAMPLE
 OutD="./minimap2_mapping/${refNAME}_ref_splice-hq"
 InD="./CCS3/rmReadsWithBarcode/noBC/${SAMPLE}"
 
