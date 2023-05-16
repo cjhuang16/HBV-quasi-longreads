@@ -29,6 +29,8 @@ echo -e "\033[32m       >>> minimap2 mapping\033[0m             "
 minimap2 -a --cs=long -x splice:hq -t 10 --secondary=no --end-bonus 5 -R "@RG\tID:${RUNID}\tPL:Pacbio_Sequel_ccs\tSM:${SAMPLE}\tRE:${refNAME}" ${ref} $InD/${SAMPLE}.ccs3.hifi_reads.noBC.fastq.gz -o $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2.sam
 
 # sam to bam
+samtools view -Sb $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2.sam > $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2.bam
+
 # -F0x900: exclude supplementary alignment (github.com/lh3/minimap2/blob/master/FAQ.md)
 samtools view -F0x904 -Sb -h $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2.sam > $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2.uniq.bam
 samtools view -f0x900 -Sb -h $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2.sam > $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2.f0x900.bam
@@ -129,11 +131,8 @@ samtools sort $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2_filter_final.bam > $
 
 samtools index $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2_filter_final.sorted.bam
 
-# clean intermediate file
-#rm $samchromfile ${samchromtargetfile}.left ${samchromtargetfile}.right ${samchromtargetfile} ${bamchromtargetfile} ${sortedbamchromtargetfile} ${sortedbamchromtargetfile}.bai  ${samfilterlengthfile} ${SAMPLE}.cigar.lengthsum.csv
 
 # filter out reads with clipping at head and tail
-
 echo -e "\033[32m       >>> clipping filtering\033[0m             "
 
 # find soft clip >= 10 at both end
@@ -168,5 +167,15 @@ rm $OutD/${SAMPLE}/${SAMPLE}.cigar.lengthsum.csv
 rm $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2_filter_cigard.length_final.sam
 rm $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2_filter_final.bam
 rm $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2_filter_final.clip10.bam
-echo -e "                  \033[32m          ... ${SAMPLE} run finished\033[0m    " 
 
+# move to new folder
+mkdir -p $OutD/${SAMPLE}/filter_steps
+
+mv $OutD/${SAMPLE}/${SAMPLE}.qname.* $OutD/${SAMPLE}/filter_steps/
+mv $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2_filter_cigard.length_final.bam $OutD/${SAMPLE}/filter_steps/
+mv $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2.f0x900.bam $OutD/${SAMPLE}/filter_steps/
+mv $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2_filter_final.sorted.bam $OutD/${SAMPLE}/filter_steps/
+mv $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2_filter_final.sorted.bam.bai $OutD/${SAMPLE}/filter_steps/
+
+
+echo -e "                  \033[32m          ... ${SAMPLE} run finished\033[0m    "
