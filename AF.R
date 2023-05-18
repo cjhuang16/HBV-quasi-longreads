@@ -1,6 +1,10 @@
 #!/usr/bin/env Rscript
 # calculate position allele frequency (A,T,G,C/sum)
 
+# Dr. Chih-Jen Huang
+# Genomic Research Center, Academia Sinica, Taipei, Taiwan
+# May.2023
+
 suppressPackageStartupMessages(
   library(tidyverse))
 

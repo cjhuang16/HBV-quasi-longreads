@@ -1,4 +1,10 @@
 #!/usr/bin/env Rscript
+# calculate Shannon entropy at each genomic position
+# calculate mean Shannon entropy of HBV genomic regions
+
+# Dr. Chih-Jen Huang
+# Genomic Research Center, Academia Sinica, Taipei, Taiwan
+# May.2023
 
 suppressPackageStartupMessages(library(tidyverse,
                                        ggplot2)

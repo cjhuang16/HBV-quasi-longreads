@@ -1,5 +1,10 @@
 #!/usr/bin/env Rscript
 # extract nt sequence at multiple positions (co-variants) from bam file
+# calculate proportion of the co-variant haplotypes
+
+# Dr. Chih-Jen Huang
+# Genomic Research Center, Academia Sinica, Taipei, Taiwan
+# May.2023
 
 library(Rsamtools)
 library(GenomicAlignments)
