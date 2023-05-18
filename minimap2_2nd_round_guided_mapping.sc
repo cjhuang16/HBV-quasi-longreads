@@ -14,8 +14,12 @@ ref="./example/HBV_isolate_SH1212-C5_complete_genome.fasta"
 refNAME="SH1212-C5"
 SAMPLE="1810095" #example sample name
 #SAMPLE=$1 #args for SAMPLE
-OutD="./minimap2_mapping/${refNAME}_ref_splice-hq"
+OutD="./minimap2_mapping/${refNAME}_ref_splice-hq-realign"
 InD="./CCS3/rmReadsWithBarcode/noBC/${SAMPLE}"
+
+# Splicing juction table by 2passtools
+RealignRefBed="./2passtools/merged_bam.2passtools.score.plus.count100.bed"
+JBV="5" #junction bonus value for minimap2
 
 RUNID="RUNID"
 
@@ -31,7 +35,7 @@ mkdir -p $OutD/${SAMPLE}
 # run command:
 ## minimap2 splice:hq mode
 echo -e "\033[32m       >>> minimap2 mapping\033[0m             "
-minimap2 -a --cs=long -x splice:hq -t 10 --secondary=no --end-bonus 5 -R "@RG\tID:${RUNID}\tPL:Pacbio_Sequel_ccs\tSM:${SAMPLE}\tRE:${refNAME}" ${ref} $InD/${SAMPLE}.ccs3.hifi_reads.noBC.fastq.gz -o $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2.sam
+minimap2 -a --cs=long -x splice:hq -t 10 --secondary=no --end-bonus 5 --junc-bonus=$JBV --junc-bed $RealignRefBed -R "@RG\tID:${RUNID}\tPL:Pacbio_Sequel_ccs\tSM:${SAMPLE}\tRE:${refNAME}" ${ref} $InD/${SAMPLE}.ccs3.hifi_reads.noBC.fastq.gz -o $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2.sam
 
 # sam to bam
 samtools view -Sb $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2.sam > $OutD/${SAMPLE}/${SAMPLE}_${refNAME}_minimap2.bam
