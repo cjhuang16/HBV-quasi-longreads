@@ -6,9 +6,9 @@
 # Genomic Research Center, Academia Sinica, Taipei, Taiwan
 # May.2023
 
-suppressPackageStartupMessages(library(readr,
-                                       ggplot2)
-)
+library(readr)
+library(ggplot2)
+library(dplyr)
 
 WDdir="./un-normalized_shannon"
 
