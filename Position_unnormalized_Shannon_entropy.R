@@ -6,7 +6,7 @@
 # Genomic Research Center, Academia Sinica, Taipei, Taiwan
 # May.2023
 
-suppressPackageStartupMessages(library(tidyverse,
+suppressPackageStartupMessages(library(readr,
                                        ggplot2)
 )
 
