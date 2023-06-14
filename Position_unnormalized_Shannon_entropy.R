@@ -205,42 +205,6 @@ write.csv(shannon.table.rm.outlier, file = paste0("./shannon.table.rm.outlier.cs
 
 save(shannon.table,shannon.table.rm.outlier,slist, file = "./shannon.table.RData")
 
-
-##########################################################################
-#sliding windows test run
-shannon.table.v <- as.data.frame(shannon.table[,26:3200])
-colnames(shannon.table.v) <- paste0("Pos_", colnames(shannon.table.v))
-shannon.table.v$Pos_2334 <- "NA"
-shannon.table.v$Pos_2335 <- "NA"
-shannon.table.v <- as.matrix(shannon.table.v)
-
-library(runner)
-
-sliding_w <- function(windowsize){ 
-  shannon.table.win <- matrix(,nrow=0,ncol=3175) # create empty matrix
-  colnames(shannon.table.win) <- paste0("Pos_",c(26:3200))
-  
-  for (i in 1:length(rownames(shannon.table.v))){ 
-    shannon.table.win <- rbind(shannon.table.win, 
-                               runner(                    # run sliding windows
-                                 as.numeric(shannon.table.v[i,]),         # row as input
-                                 k = windowsize,                    # window size = 51, slide always = 1 
-                                 lag = -((windowsize-1)/2),
-                                 f = function(x) mean(x, na.rm = TRUE)                   # function
-                               )                          # lag = 2; data shift 2 column
-                               
-    )
-    row.names(shannon.table.win)[i] <- row.names(shannon.table.v)[i] # fill up rownames
-  }
-  # runner: https://cran.r-project.org/web/packages/runner/vignettes/apply_any_r_function.html
-  
-  write.csv(shannon.table.win, file = paste0("shannon.table.sliding_w",windowsize,".csv"))
-}
-
-sliding_w(51)
-sliding_w(31)
-sliding_w(15)
-
 ##########################
 # Individual Shannon plot
 # scale y from 0-1
