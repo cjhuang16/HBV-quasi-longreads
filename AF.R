@@ -6,7 +6,7 @@
 # May.2023
 
 suppressPackageStartupMessages(
-  library(tidyverse))
+  library(readr))
 
 #WDdir="./AF_counts"
 WDdir="./AF_counts"
